@@ -7,11 +7,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PropertyRepository")
  * @UniqueEntity("title")
+ * @Vich\Uploadable
  */
 class Property
 {
@@ -27,6 +32,19 @@ class Property
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    //Assert\Image(mimeTypes="image\jpeg") => bloque jpg
+    /**
+     * @Vich\UploadableField(mapping="property_image", fileNameProperty="filename")
+     * @var File|null
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private $filename;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -97,6 +115,11 @@ class Property
     private $createdAt;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Option", inversedBy="properties")
      */
     private $options;
@@ -108,6 +131,27 @@ class Property
 
     public function getId(): ?int {
         return $this->id;
+    }
+
+    public function getImageFile(): ?File {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(File $imageFile): self {
+        $this->imageFile = $imageFile;
+        if ($this->imageFile instanceof UploadedFile) {
+            $this->updatedAt = new \DateTime('now');
+        }
+        return $this;
+    }
+
+    public function getFilename(): ?string {
+        return $this->filename;
+    }
+
+    public function setFilename(string $filename): self {
+        $this->filename = $filename;
+        return $this;
     }
 
     public function getTitle(): ?string {
@@ -239,6 +283,15 @@ class Property
         return $this;
     }
 
+    public function getUpdatedAt(): ?\DateTimeInterface {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
     /**
      * @return Collection|Option[]
      */
@@ -261,4 +314,5 @@ class Property
         }
         return $this;
     }
+
 }
