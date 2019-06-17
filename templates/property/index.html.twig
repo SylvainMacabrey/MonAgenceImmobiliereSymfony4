@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}A acheter{% endblock %}
+
+{% block body %}
+
+	<div class="jumbotron">
+
+		<div class="container">
+
+			{{ form_start(form, {'attr': {'novalidate': 'novalidate'} } ) }}
+				<div class="form-row align-items-end">
+					<div class="col-md-3">{{form_row(form.maxPrice)}}</div>
+					<div class="col-md-3">{{form_row(form.minSurface)}}</div>
+					<div class="col-md-3">{{form_row(form.options)}}</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<button class="btn btn-primary">Rechercher</button>
+						</div>
+					</div>
+				</div>
+				{{ form_widget(form) }}
+			{{ form_end(form) }}
+
+		</div>
+
+	</div>
+
+	<div class="container mt-4">
+		
+		<h1 class="text-center">Les biens</h1>
+
+		<div class="row">
+			{% for property in properties if properties is not empty %}
+				<div class="col-md-4">
+					{% include('property/_property.html.twig') %}	
+				</div>
+			{% else %}
+				<div class="alert alert-danger">Aucune propriété ne correspond à votre recherche ! <div>
+			{% endfor %}
+		</div>
+
+		<div class="pagination">
+			{{ knp_pagination_render(properties) }}
+		</div>
+
+	</div>
+
+{% endblock %}

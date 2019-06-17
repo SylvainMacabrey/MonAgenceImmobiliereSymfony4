@@ -1,0 +1,14 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+#home:
+#    path: /
+#    controller: App\Controller\HomeController::index
+
+controllers:
+    resource: ../src/Controller/
+    type: annotation
+
+logout:
+     path: /logout

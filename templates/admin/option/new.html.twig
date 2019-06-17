@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gérer les biens{% endblock %}
+
+{% block body %}
+
+	<div class="container mt-4">
+
+		<h2 class="text-center"> Créer une option </h2>
+
+		{{ include ('admin/option/_form.html.twig', {button: 'Créer'}) }}
+
+	</div>
+
+{% endblock %}
