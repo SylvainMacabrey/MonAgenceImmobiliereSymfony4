@@ -15,19 +15,12 @@
 		<h2 class="text-center"> Les derniers biens </h2>
 
 		<div class="row flex">
-			{% for property in properties %}
-				<div class="col-3"> 
-					<div class="card">
-						<div class="card-body">
-							<h5 class="card-title">
-								<a href="{{path('property.show', {id: property.id, slug: property.slug})}}">{{ property.title }}</a>
-							</h5>
-							<p class="card-text">{{ property.city }} ({{ property.postalCode }})</p>
-							<p class="card-text"> {{ property.description }} </p>
-							<div class="text-primary"> {{ property.formattedPrice }} €</div>
-						</div>
-					</div>
+			{% for property in properties if properties is not empty %}
+				<div class="col-md-3">
+					{% include('property/_property.html.twig') %}	
 				</div>
+			{% else %}
+				<div class="alert alert-danger">Aucune propriété ne correspond à votre recherche ! <div>
 			{% endfor %}
 		</div>
 

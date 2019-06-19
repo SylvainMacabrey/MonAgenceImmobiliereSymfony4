@@ -1,0 +1,17 @@
+services:
+  recaptcha.type:
+    class: Sylvain\RecaptchaBundle\Type\RecaptchaSubmitType
+    tags: ['form.type']
+    arguments:
+      $key: '%recaptcha.key%'
+  recaptcha.validator:
+    class: Sylvain\RecaptchaBundle\Constraints\RecaptchaValidator
+    tags: ['validator.constraint_validator']
+    autowire: true
+  ReCaptcha\ReCaptcha:
+    class: ReCaptcha\ReCaptcha
+    arguments:
+      $secret: '%recaptcha.secret%'
+      $requestMethod: '@Recaptcha\RequestMethod'
+  Recaptcha\RequestMethod: '@Recaptcha\RequestMethod\CurlPost'
+  Recaptcha\RequestMethod\CurlPost: ~
